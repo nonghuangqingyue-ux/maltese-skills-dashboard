@@ -42,16 +42,17 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 12px;
+      gap: 18px;
     }
     .panel {
       background: #fffdf9;
       border: 1px solid #f0e7dc;
       border-radius: 12px;
-      padding: 14px;
+      padding: 16px;
       box-shadow: 0 2px 10px rgba(120, 85, 55, .06);
     }
-    .panel h2 { font-size: 1rem; margin-bottom: 10px; color: #5f4b3d; }
+    .panel h2 { font-size: 1rem; margin-bottom: 4px; color: #5f4b3d; }
+    .panel-note { color: #a18e7f; font-size: .78rem; margin-bottom: 10px; }
 
     .list { list-style: none; display: grid; gap: 8px; }
     .row {
@@ -69,6 +70,11 @@
       border-radius: 8px;
       background: #fff8ef;
       border: 1px solid #f1e6d8;
+    }
+    .resource-sub {
+      margin-top: 5px;
+      font-size: .78rem;
+      color: #9b8778;
     }
     .resource-top {
       display: flex;
@@ -168,15 +174,15 @@
     <section class="kpis" id="kpis"></section>
 
     <section class="grid">
-      <article class="panel"><h2>🟢 Status</h2><ul class="list" id="status-list"></ul></article>
-      <article class="panel"><h2>⏱ Uptime</h2><ul class="list" id="uptime-list"></ul></article>
-      <article class="panel"><h2>🧠 System Resources</h2><ul class="list" id="resource-list"></ul></article>
-      <article class="panel"><h2>🛠 Services</h2><ul class="list" id="service-list"></ul></article>
-      <article class="panel"><h2>🧵 Active Sessions</h2><ul class="list" id="session-list"></ul></article>
-      <article class="panel"><h2>🤖 Sub-agents</h2><ul class="list" id="subagent-list"></ul></article>
-      <article class="panel"><h2>⏰ Cron Jobs</h2><ul class="list" id="cron-list"></ul></article>
-      <article class="panel"><h2>🧰 NPM Global Tools</h2><div class="chips" id="npm-tools"></div></article>
-      <article class="panel"><h2>🧩 MCP Servers</h2><ul class="list" id="mcp-list"></ul></article>
+      <article class="panel"><h2>🟢 Status</h2><div class="panel-note">核心状态与运行健康</div><ul class="list" id="status-list"></ul></article>
+      <article class="panel"><h2>⏱ Uptime</h2><div class="panel-note">主机与服务持续运行时间</div><ul class="list" id="uptime-list"></ul></article>
+      <article class="panel"><h2>🧠 System Resources</h2><div class="panel-note">CPU / 内存 / 磁盘实时占用</div><ul class="list" id="resource-list"></ul></article>
+      <article class="panel"><h2>🛠 Services</h2><div class="panel-note">关键服务可用性与状态</div><ul class="list" id="service-list"></ul></article>
+      <article class="panel"><h2>🧵 Active Sessions</h2><div class="panel-note">当前会话活跃情况</div><ul class="list" id="session-list"></ul></article>
+      <article class="panel"><h2>🤖 Sub-agents</h2><div class="panel-note">后台子代理任务队列</div><ul class="list" id="subagent-list"></ul></article>
+      <article class="panel"><h2>⏰ Cron Jobs</h2><div class="panel-note">定时任务执行计划</div><ul class="list" id="cron-list"></ul></article>
+      <article class="panel"><h2>🧰 NPM Global Tools</h2><div class="panel-note">全局工具清单</div><div class="chips" id="npm-tools"></div></article>
+      <article class="panel"><h2>🧩 MCP Servers</h2><div class="panel-note">MCP 服务配置与在线情况</div><ul class="list" id="mcp-list"></ul></article>
 
       <article class="panel" style="grid-column: 1 / -1;">
         <h2>📦 Skills</h2>
@@ -210,10 +216,10 @@
         { k: 'Last Restart', v: '—' }
       ],
       resources: [
-        { k: 'CPU', v: '19.4%', pct: 19.4 },
-        { k: 'Memory', v: '92.0%', pct: 92.0 },
-        { k: 'Disk /', v: '24.3%', pct: 24.3 },
-        { k: 'Load Avg', v: '4.20 / 2.37 / 1.88' }
+        { k: '⚙️ CPU', v: '19.4%', pct: 19.4, detail: '负载占比' },
+        { k: '🧠 Memory', v: '92.0%', pct: 92.0, detail: '14.7 / 16.0 GiB' },
+        { k: '💾 Disk /', v: '24.3%', pct: 24.3, detail: '120.1 / 494.4 GiB' },
+        { k: '📈 Load Avg', v: '4.20 / 2.37 / 1.88', detail: '1m / 5m / 15m' }
       ],
       services: [
         { k: 'openclaw', v: 'running', cls: 'ok' },
@@ -297,6 +303,7 @@
                 <span>${r.v}</span>
               </div>
               <div class="bar"><span style="width:${Math.max(0, Math.min(100, r.pct))}%"></span></div>
+              ${r.detail ? `<div class="resource-sub">${r.detail}</div>` : ''}
             </li>
           `;
         }

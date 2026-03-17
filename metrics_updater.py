@@ -29,7 +29,11 @@ def get_cpu_used() -> float:
     return round(100.0 - idle, 1)
 
 
-def get_memory_used_pct() -> float:
+def bytes_to_gib(v: int) -> float:
+    return round(v / (1024 ** 3), 1)
+
+
+def get_memory_stats():
     pagesize = int(run("/usr/sbin/sysctl -n hw.pagesize") or 4096)
     mem_total = int(run("/usr/sbin/sysctl -n hw.memsize") or 1)
     vm = run("vm_stat")
@@ -42,12 +46,21 @@ def get_memory_used_pct() -> float:
                 vals[k.strip()] = int(vv)
     free = (vals.get("Pages free", 0) + vals.get("Pages speculative", 0)) * pagesize
     used = max(mem_total - free, 0)
-    return round((used / mem_total) * 100, 1)
+    pct = round((used / mem_total) * 100, 1)
+    return {
+        "pct": pct,
+        "used_gib": bytes_to_gib(used),
+        "total_gib": bytes_to_gib(mem_total),
+    }
 
 
-def get_disk_used_pct() -> float:
+def get_disk_stats():
     d = shutil.disk_usage("/")
-    return round((d.used / d.total) * 100, 1)
+    return {
+        "pct": round((d.used / d.total) * 100, 1),
+        "used_gib": bytes_to_gib(d.used),
+        "total_gib": bytes_to_gib(d.total),
+    }
 
 
 def get_load_avg() -> str:
@@ -86,8 +99,8 @@ def npm_global_tools(limit=18):
 
 def collect():
     cpu = get_cpu_used()
-    mem = get_memory_used_pct()
-    disk = get_disk_used_pct()
+    mem = get_memory_stats()
+    disk = get_disk_stats()
     load = get_load_avg()
     up = get_uptime()
     gw = gateway_status()
@@ -107,10 +120,10 @@ def collect():
             {"k": "🕒 Last Refresh", "v": datetime.now().strftime("%H:%M:%S")},
         ],
         "resources": [
-            {"k": "⚙️ CPU", "v": f"{cpu}%", "pct": cpu},
-            {"k": "🧠 Memory", "v": f"{mem}%", "pct": mem},
-            {"k": "💾 Disk /", "v": f"{disk}%", "pct": disk},
-            {"k": "📈 Load Avg", "v": load},
+            {"k": "⚙️ CPU", "v": f"{cpu}%", "pct": cpu, "detail": "负载占比"},
+            {"k": "🧠 Memory", "v": f"{mem['pct']}%", "pct": mem['pct'], "detail": f"{mem['used_gib']} / {mem['total_gib']} GiB"},
+            {"k": "💾 Disk /", "v": f"{disk['pct']}%", "pct": disk['pct'], "detail": f"{disk['used_gib']} / {disk['total_gib']} GiB"},
+            {"k": "📈 Load Avg", "v": load, "detail": "1m / 5m / 15m"},
         ],
         "services": [
             {"k": "openclaw", "v": gw, "cls": "ok" if gw == "running" else "warn"},

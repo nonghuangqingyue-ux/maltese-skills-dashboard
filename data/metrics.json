@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-17 17:34:57",
+  "updatedAt": "2026-03-17 17:46:21",
   "host": "Mac",
   "status": [
     {
@@ -26,7 +26,7 @@
   "uptime": [
     {
       "k": "🖥 Host Uptime",
-      "v": "17:34  up 3 days, 15:58, 2 users, load averages: 1.77 1.93 1.87"
+      "v": "17:46  up 3 days, 16:09, 2 users, load averages: 4.74 2.79 2.19"
     },
     {
       "k": "📡 Gateway Uptime",
@@ -34,28 +34,32 @@
     },
     {
       "k": "🕒 Last Refresh",
-      "v": "17:34:57"
+      "v": "17:46:21"
     }
   ],
   "resources": [
     {
       "k": "⚙️ CPU",
-      "v": "13.2%",
-      "pct": 13.2
+      "v": "20.3%",
+      "pct": 20.3,
+      "detail": "负载占比"
     },
     {
       "k": "🧠 Memory",
-      "v": "92.7%",
-      "pct": 92.7
+      "v": "96.0%",
+      "pct": 96.0,
+      "detail": "15.4 / 16.0 GiB"
     },
     {
       "k": "💾 Disk /",
       "v": "24.3%",
-      "pct": 24.3
+      "pct": 24.3,
+      "detail": "55.5 / 228.3 GiB"
     },
     {
       "k": "📈 Load Avg",
-      "v": "1.77 / 1.93 / 1.87"
+      "v": "4.74 / 2.79 / 2.19",
+      "detail": "1m / 5m / 15m"
     }
   ],
   "services": [
