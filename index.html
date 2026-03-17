@@ -3,39 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🐶 Maltese Server Dashboard</title>
+  <title>🐶 Maltese 服务器信息看板</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0b1020;
-      color: #e6edf3;
+      background: #faf8f3;
+      color: #3a312b;
       min-height: 100vh;
     }
-    header {
-      background: linear-gradient(120deg, #4f46e5, #0ea5e9);
-      padding: 28px 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
-    }
-    h1 { font-size: 1.8rem; }
-    .subtitle { margin-top: 6px; opacity: .9; }
-    .meta { margin-top: 10px; font-size: .88rem; opacity: .9; }
 
-    .container { max-width: 1250px; margin: 18px auto 40px; padding: 0 14px; }
+    header {
+      max-width: 1220px;
+      margin: 18px auto 8px;
+      padding: 0 16px;
+    }
+    h1 { font-size: 1.9rem; color: #5a4638; }
+    .meta { margin-top: 8px; color: #8a7566; font-size: .9rem; }
+
+    .container { max-width: 1220px; margin: 0 auto 40px; padding: 0 16px; }
+
     .kpis {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 10px;
-      margin-bottom: 14px;
+      margin: 16px 0;
     }
     .kpi {
-      background: #111936;
-      border: 1px solid #26345e;
+      background: #fffdf9;
+      border: 1px solid #efe6db;
       border-radius: 12px;
       padding: 12px;
+      box-shadow: 0 2px 8px rgba(120, 85, 55, .06);
     }
-    .kpi .n { font-size: 1.45rem; font-weight: 700; }
-    .kpi .l { margin-top: 4px; color: #9fb0d0; font-size: .82rem; }
+    .kpi .n { font-size: 1.35rem; font-weight: 700; color: #6a5241; }
+    .kpi .l { margin-top: 4px; color: #9a8678; font-size: .84rem; }
 
     .grid {
       display: grid;
@@ -43,25 +45,26 @@
       gap: 12px;
     }
     .panel {
-      background: #0f1733;
-      border: 1px solid #24325a;
+      background: #fffdf9;
+      border: 1px solid #f0e7dc;
       border-radius: 14px;
       padding: 14px;
-      min-height: 180px;
+      box-shadow: 0 2px 10px rgba(120, 85, 55, .06);
     }
-    .panel h2 { font-size: 1rem; margin-bottom: 10px; }
-    .muted { color: #90a4c8; font-size: .86rem; }
-    .list { list-style: none; display: grid; gap: 7px; }
+    .panel h2 { font-size: 1rem; margin-bottom: 10px; color: #5f4b3d; }
+
+    .list { list-style: none; display: grid; gap: 8px; }
     .row {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
-      padding: 7px 9px;
-      border-radius: 8px;
-      background: #121d40;
-      border: 1px solid #22315b;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: #fff8ef;
+      border: 1px solid #f1e6d8;
       font-size: .9rem;
     }
+
     .pill {
       padding: 2px 8px;
       border-radius: 999px;
@@ -69,50 +72,69 @@
       white-space: nowrap;
       border: 1px solid transparent;
     }
-    .ok { color: #86efac; border-color: #14532d; background: #052e16; }
-    .warn { color: #fde68a; border-color: #78350f; background: #451a03; }
-    .bad { color: #fca5a5; border-color: #7f1d1d; background: #450a0a; }
+    .ok { color: #2f6d43; border-color: #b5dec1; background: #eaf8ef; }
+    .warn { color: #9a6a22; border-color: #efd3a9; background: #fff5e8; }
+    .bad { color: #9d3b3b; border-color: #efc2c2; background: #fff1f1; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
     .chip {
-      display: inline-block;
-      margin: 3px 5px 3px 0;
-      padding: 4px 8px;
+      padding: 5px 9px;
       border-radius: 8px;
-      background: #1b2a52;
-      border: 1px solid #29417a;
+      background: #fff5ea;
+      border: 1px solid #eddcc8;
       font-size: .82rem;
+      color: #6e5949;
     }
-    .skills-wrap { max-height: 420px; overflow: auto; padding-right: 4px; }
-    .skill {
+
+    .skills-toolbar {
       display: flex;
-      justify-content: space-between;
       gap: 8px;
-      align-items: center;
-      font-size: .85rem;
-      padding: 7px 8px;
-      border-bottom: 1px solid #203056;
-    }
-    .skill:last-child { border-bottom: 0; }
-    .search {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid #33477b;
-      background: #0a122b;
-      color: #dbe8ff;
-      padding: 9px 10px;
       margin-bottom: 10px;
+      flex-wrap: wrap;
     }
-    .footer-note {
-      margin-top: 14px;
-      font-size: .82rem;
-      color: #8ea3c8;
+    .search {
+      flex: 1;
+      min-width: 200px;
+      border-radius: 10px;
+      border: 1px solid #e8dac9;
+      background: #fff;
+      color: #4a3a2f;
+      padding: 9px 10px;
     }
-    a { color: #8cc7ff; }
+    .filter-btn {
+      border: 1px solid #e7d7c3;
+      background: #fff9f1;
+      color: #7b6452;
+      border-radius: 9px;
+      padding: 8px 11px;
+      cursor: pointer;
+      font-size: .84rem;
+    }
+    .filter-btn.active { background: #f3e3cf; border-color: #dfc6aa; color: #6a503d; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+    }
+    .skill-card {
+      background: #fff;
+      border: 1px solid #f0e5d7;
+      border-radius: 12px;
+      padding: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .skill-title { font-size: .9rem; font-weight: 650; color: #5b4738; display: flex; justify-content: space-between; gap: 8px; }
+    .skill-desc { font-size: .8rem; color: #8b7868; line-height: 1.5; min-height: 2.2em; }
+
+    .footer-note { margin-top: 14px; font-size: .82rem; color: #9b8878; }
   </style>
 </head>
 <body>
   <header>
     <h1>🐶 Maltese 服务器信息看板</h1>
-    <div class="subtitle">Status / Sessions / Cron / Resources / Skills / Services</div>
     <div class="meta" id="meta"></div>
   </header>
 
@@ -120,62 +142,29 @@
     <section class="kpis" id="kpis"></section>
 
     <section class="grid">
-      <article class="panel">
-        <h2>🟢 Status</h2>
-        <ul class="list" id="status-list"></ul>
-      </article>
-
-      <article class="panel">
-        <h2>⏱ Uptime</h2>
-        <ul class="list" id="uptime-list"></ul>
-      </article>
-
-      <article class="panel">
-        <h2>🧠 System Resources</h2>
-        <ul class="list" id="resource-list"></ul>
-      </article>
-
-      <article class="panel">
-        <h2>🛠 Services</h2>
-        <ul class="list" id="service-list"></ul>
-      </article>
-
-      <article class="panel">
-        <h2>🧵 Active Sessions</h2>
-        <ul class="list" id="session-list"></ul>
-      </article>
-
-      <article class="panel">
-        <h2>🤖 Sub-agents</h2>
-        <ul class="list" id="subagent-list"></ul>
-      </article>
-
-      <article class="panel">
-        <h2>⏰ Cron Jobs</h2>
-        <ul class="list" id="cron-list"></ul>
-      </article>
-
-      <article class="panel">
-        <h2>🧰 NPM Global Tools</h2>
-        <div id="npm-tools"></div>
-      </article>
-
-      <article class="panel">
-        <h2>🧩 MCP Servers</h2>
-        <ul class="list" id="mcp-list"></ul>
-      </article>
+      <article class="panel"><h2>🟢 Status</h2><ul class="list" id="status-list"></ul></article>
+      <article class="panel"><h2>⏱ Uptime</h2><ul class="list" id="uptime-list"></ul></article>
+      <article class="panel"><h2>🧠 System Resources</h2><ul class="list" id="resource-list"></ul></article>
+      <article class="panel"><h2>🛠 Services</h2><ul class="list" id="service-list"></ul></article>
+      <article class="panel"><h2>🧵 Active Sessions</h2><ul class="list" id="session-list"></ul></article>
+      <article class="panel"><h2>🤖 Sub-agents</h2><ul class="list" id="subagent-list"></ul></article>
+      <article class="panel"><h2>⏰ Cron Jobs</h2><ul class="list" id="cron-list"></ul></article>
+      <article class="panel"><h2>🧰 NPM Global Tools</h2><div class="chips" id="npm-tools"></div></article>
+      <article class="panel"><h2>🧩 MCP Servers</h2><ul class="list" id="mcp-list"></ul></article>
 
       <article class="panel" style="grid-column: 1 / -1;">
         <h2>📦 Skills</h2>
-        <input class="search" id="skill-search" placeholder="搜索 skill..." />
-        <div class="skills-wrap" id="skills"></div>
+        <div class="skills-toolbar">
+          <input class="search" id="skill-search" placeholder="搜索 skill..." />
+          <button class="filter-btn active" data-filter="all">全部</button>
+          <button class="filter-btn" data-filter="ready">READY</button>
+          <button class="filter-btn" data-filter="missing">MISSING</button>
+        </div>
+        <div class="skills-grid" id="skills"></div>
       </article>
     </section>
 
-    <p class="footer-note">
-      当前是<strong>信息面板版</strong>。后续可接入自动采集脚本（OpenClaw API + 系统命令）定时更新 JSON。
-      推荐数据源：<code>openclaw status</code>、<code>sessions_list</code>、<code>subagents list</code>、<code>crontab -l</code>、<code>pmset -g batt</code>、<code>top</code>。
-    </p>
+    <p class="footer-note">（下一步可接自动采集脚本，替换当前占位数据）</p>
   </main>
 
   <script>
@@ -186,60 +175,67 @@
         { k: 'OpenClaw Gateway', v: 'Running', cls: 'ok' },
         { k: 'Model', v: 'onekey-codex/gpt-5.3-codex', cls: 'ok' },
         { k: 'Channel', v: 'Discord', cls: 'ok' },
-        { k: 'Health', v: 'Nominal', cls: 'ok' },
+        { k: 'Health', v: 'Nominal', cls: 'ok' }
       ],
       uptime: [
         { k: 'Host Uptime', v: '— (待接真实数据)' },
         { k: 'Gateway Uptime', v: '—' },
-        { k: 'Last Restart', v: '—' },
+        { k: 'Last Restart', v: '—' }
       ],
       resources: [
         { k: 'CPU', v: '—' },
         { k: 'Memory', v: '—' },
         { k: 'Disk /', v: '—' },
-        { k: 'Load Avg', v: '—' },
+        { k: 'Load Avg', v: '—' }
       ],
       services: [
         { k: 'openclaw', v: 'running', cls: 'ok' },
         { k: 'tailscale', v: 'unknown', cls: 'warn' },
-        { k: 'ssh', v: 'unknown', cls: 'warn' },
+        { k: 'ssh', v: 'unknown', cls: 'warn' }
       ],
       activeSessions: [
-        { k: 'main', v: 'discord #skill', cls: 'ok' },
+        { k: 'main', v: 'discord #skill', cls: 'ok' }
       ],
       subagents: [
         { k: 'running', v: '0', cls: 'ok' },
-        { k: 'queued', v: '0', cls: 'ok' },
+        { k: 'queued', v: '0', cls: 'ok' }
       ],
       cronJobs: [
-        { k: 'Gmail 周报', v: '每周五 15:00 GMT+8', cls: 'ok' },
+        { k: 'Gmail 周报', v: '每周五 15:00 GMT+8', cls: 'ok' }
       ],
-      npmTools: [
-        'openclaw', 'clawhub', 'node', 'npm'
-      ],
+      npmTools: ['openclaw', 'clawhub', 'node', 'npm'],
       mcpServers: [
         { k: 'Configured', v: '—' },
-        { k: 'Online', v: '—' },
+        { k: 'Online', v: '—' }
       ],
       skills: [
-        { name: 'apple-notes', ready: true }, { name: 'apple-reminders', ready: true },
-        { name: 'clawhub', ready: true }, { name: 'discord', ready: true },
-        { name: 'gog', ready: true }, { name: 'healthcheck', ready: true },
-        { name: 'node-connect', ready: true }, { name: 'peekaboo', ready: true },
-        { name: 'skill-creator', ready: true }, { name: 'weather', ready: true },
-        { name: '1password', ready: false }, { name: 'himalaya', ready: false },
-        { name: 'mcporter', ready: false }, { name: 'nano-pdf', ready: false },
-        { name: 'openai-whisper', ready: false }, { name: 'things-mac', ready: false }
+        { name: 'apple-notes', ready: true, desc: '管理 Apple Notes（创建、编辑、检索）' },
+        { name: 'apple-reminders', ready: true, desc: '管理提醒事项（增删改查、完成状态）' },
+        { name: 'clawhub', ready: true, desc: '搜索/安装/更新/发布 skills' },
+        { name: 'discord', ready: true, desc: 'Discord 渠道消息与管理操作' },
+        { name: 'gog', ready: true, desc: 'Gmail/Calendar/Drive/Docs 等 Google 工具' },
+        { name: 'healthcheck', ready: true, desc: '主机安全审查与风险配置建议' },
+        { name: 'node-connect', ready: true, desc: '诊断 OpenClaw Node 配对连接问题' },
+        { name: 'peekaboo', ready: true, desc: 'macOS UI 捕获与自动化' },
+        { name: 'skill-creator', ready: true, desc: '创建/审计/优化 skill 目录结构' },
+        { name: 'weather', ready: true, desc: '天气查询与短期预报' },
+        { name: '1password', ready: false, desc: '1Password CLI 集成与密钥注入' },
+        { name: 'himalaya', ready: false, desc: 'IMAP/SMTP 邮件 CLI 管理' },
+        { name: 'mcporter', ready: false, desc: 'MCP 服务器与工具调用管理' },
+        { name: 'nano-pdf', ready: false, desc: '自然语言编辑 PDF' },
+        { name: 'openai-whisper', ready: false, desc: '本地语音识别转文字' },
+        { name: 'things-mac', ready: false, desc: 'Things 3 任务管理' }
       ]
     };
 
-    const byId = id => document.getElementById(id);
+    let skillFilter = 'all';
 
+    const byId = id => document.getElementById(id);
     function renderRows(id, rows) {
       byId(id).innerHTML = rows.map(r => `
         <li class="row">
           <span>${r.k}</span>
-          <span class="${r.cls ? `pill ${r.cls}` : 'muted'}">${r.v}</span>
+          <span class="${r.cls ? `pill ${r.cls}` : ''}">${r.v}</span>
         </li>
       `).join('');
     }
@@ -256,23 +252,29 @@
         ['Active Sessions', `${activeSessions}`],
         ['Cron Jobs', `${cronCount}`],
         ['Sub-agents', `${runningSubAgents}`],
-        ['Services', `${data.services.length}`],
+        ['Services', `${data.services.length}`]
       ].map(([l, n]) => `<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
-    }
-
-    function renderSkills(filterText = '') {
-      const q = filterText.trim().toLowerCase();
-      const rows = data.skills.filter(s => !q || s.name.toLowerCase().includes(q));
-      byId('skills').innerHTML = rows.map(s => `
-        <div class="skill">
-          <span>${s.name}</span>
-          <span class="pill ${s.ready ? 'ok' : 'warn'}">${s.ready ? 'READY' : 'MISSING'}</span>
-        </div>
-      `).join('') || `<div class="muted">没有匹配技能</div>`;
     }
 
     function renderNpmTools() {
       byId('npm-tools').innerHTML = data.npmTools.map(t => `<span class="chip">${t}</span>`).join('');
+    }
+
+    function renderSkills() {
+      const q = byId('skill-search').value.trim().toLowerCase();
+      const rows = data.skills.filter(s => {
+        const okFilter = skillFilter === 'all' || (skillFilter === 'ready' && s.ready) || (skillFilter === 'missing' && !s.ready);
+        return okFilter && (!q || s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
+      });
+      byId('skills').innerHTML = rows.map(s => `
+        <div class="skill-card">
+          <div class="skill-title">
+            <span>${s.name}</span>
+            <span class="pill ${s.ready ? 'ok' : 'warn'}">${s.ready ? 'READY' : 'MISSING'}</span>
+          </div>
+          <div class="skill-desc">${s.desc}</div>
+        </div>
+      `).join('') || '<div style="color:#9b8878;">没有匹配技能</div>';
     }
 
     function renderAll() {
@@ -290,7 +292,16 @@
       renderSkills();
     }
 
-    byId('skill-search').addEventListener('input', e => renderSkills(e.target.value));
+    byId('skill-search').addEventListener('input', renderSkills);
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        skillFilter = btn.dataset.filter;
+        renderSkills();
+      });
+    });
+
     renderAll();
   </script>
 </body>
