@@ -173,6 +173,15 @@
     }
     .skill-title { font-size: .9rem; font-weight: 650; color: #5b4738; display: flex; justify-content: space-between; gap: 8px; }
     .skill-desc { font-size: .8rem; color: #8b7868; line-height: 1.5; min-height: 2.2em; }
+    .skill-req {
+      font-size: .76rem;
+      color: #8e5f35;
+      background: #fff4e8;
+      border: 1px solid #f0dcc8;
+      border-radius: 7px;
+      padding: 3px 7px;
+      width: fit-content;
+    }
 
     .footer-note { margin-top: 14px; font-size: .82rem; color: #9b8878; }
   </style>
@@ -255,22 +264,22 @@
         { k: 'Online', v: '—' }
       ],
       skills: [
-        { name: 'apple-notes', ready: true, desc: '管理 Apple Notes（创建、编辑、检索）' },
-        { name: 'apple-reminders', ready: true, desc: '管理提醒事项（增删改查、完成状态）' },
-        { name: 'clawhub', ready: true, desc: '搜索/安装/更新/发布 skills' },
-        { name: 'discord', ready: true, desc: 'Discord 渠道消息与管理操作' },
-        { name: 'gog', ready: true, desc: 'Gmail/Calendar/Drive/Docs 等 Google 工具' },
-        { name: 'healthcheck', ready: true, desc: '主机安全审查与风险配置建议' },
-        { name: 'node-connect', ready: true, desc: '诊断 OpenClaw Node 配对连接问题' },
-        { name: 'peekaboo', ready: true, desc: 'macOS UI 捕获与自动化' },
-        { name: 'skill-creator', ready: true, desc: '创建/审计/优化 skill 目录结构' },
-        { name: 'weather', ready: true, desc: '天气查询与短期预报' },
-        { name: '1password', ready: false, desc: '1Password CLI 集成与密钥注入' },
-        { name: 'himalaya', ready: false, desc: 'IMAP/SMTP 邮件 CLI 管理' },
-        { name: 'mcporter', ready: false, desc: 'MCP 服务器与工具调用管理' },
-        { name: 'nano-pdf', ready: false, desc: '自然语言编辑 PDF' },
-        { name: 'openai-whisper', ready: false, desc: '本地语音识别转文字' },
-        { name: 'things-mac', ready: false, desc: 'Things 3 任务管理' }
+        { name: 'apple-notes', ready: true, desc: '管理 Apple Notes（创建、编辑、检索）', req: [] },
+        { name: 'apple-reminders', ready: true, desc: '管理提醒事项（增删改查、完成状态）', req: [] },
+        { name: 'clawhub', ready: true, desc: '搜索/安装/更新/发布 skills', req: [] },
+        { name: 'discord', ready: true, desc: 'Discord 渠道消息与管理操作', req: [] },
+        { name: 'gog', ready: true, desc: 'Gmail/Calendar/Drive/Docs 等 Google 工具', req: [] },
+        { name: 'healthcheck', ready: true, desc: '主机安全审查与风险配置建议', req: [] },
+        { name: 'node-connect', ready: true, desc: '诊断 OpenClaw Node 配对连接问题', req: [] },
+        { name: 'peekaboo', ready: true, desc: 'macOS UI 捕获与自动化', req: [] },
+        { name: 'skill-creator', ready: true, desc: '创建/审计/优化 skill 目录结构', req: [] },
+        { name: 'weather', ready: true, desc: '天气查询与短期预报', req: [] },
+        { name: '1password', ready: false, desc: '1Password CLI 集成与密钥注入', req: ['op'] },
+        { name: 'himalaya', ready: false, desc: 'IMAP/SMTP 邮件 CLI 管理', req: ['himalaya'] },
+        { name: 'mcporter', ready: false, desc: 'MCP 服务器与工具调用管理', req: ['mcporter'] },
+        { name: 'nano-pdf', ready: false, desc: '自然语言编辑 PDF', req: ['nano-pdf'] },
+        { name: 'openai-whisper', ready: false, desc: '本地语音识别转文字', req: ['whisper'] },
+        { name: 'things-mac', ready: false, desc: 'Things 3 任务管理', req: ['things'] }
       ]
     };
 
@@ -342,6 +351,7 @@
             <span class="pill ${s.ready ? 'ok' : 'warn'}">${s.ready ? 'READY' : 'MISSING'}</span>
           </div>
           <div class="skill-desc">${s.desc}</div>
+          ${!s.ready && s.req && s.req.length ? `<div class="skill-req">需要: ${s.req.join(', ')}</div>` : ''}
         </div>
       `).join('') || '<div style="color:#9b8878;">没有匹配技能</div>';
     }
